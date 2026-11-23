@@ -543,8 +543,15 @@ export async function createMap(container, { areas, onSelect, onReady, onFrame, 
   controls.minDistance = 7;
   controls.maxDistance = 170;
   controls.maxPolarAngle = Math.PI * 0.45;
-  controls.enableZoom = false; // zoom is handled by onWheel below, plus pinch on touch screens
-  controls.touches = { ONE: -1, TWO: THREE.TOUCH.DOLLY_ROTATE };
+  // Touch: one finger turns and tilts, pinch zooms, two fingers slide the map along the ground.
+  // Mouse: drag to turn, right-drag or shift-drag to slide; the wheel is handled by onWheel below.
+  controls.enableZoom = true;
+  controls.enablePan = true;
+  controls.screenSpacePanning = false;
+  controls.zoomSpeed = 1.1;
+  controls.rotateSpeed = matchMedia('(pointer: coarse)').matches ? 0.7 : 1;
+  controls.panSpeed = 0.9;
+  controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN };
   controls.autoRotate = !reducedMotion;
   controls.autoRotateSpeed = 0.3;
 
@@ -682,6 +689,7 @@ export async function createMap(container, { areas, onSelect, onReady, onFrame, 
   // Two-finger scroll on a trackpad (or a mouse wheel) zooms; a pinch arrives as ctrl+wheel.
   // A sideways two-finger swipe turns the county. At full zoom in or out the page scrolls again.
   const onWheel = (e) => {
+    e.stopPropagation(); // keep OrbitControls' own wheel zoom out of it
     const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? 400 : 1;
     const dx = e.deltaX * unit, dy = e.deltaY * unit;
     if (Math.abs(dx) > Math.abs(dy) * 1.2 && !e.ctrlKey) {
@@ -704,21 +712,35 @@ export async function createMap(container, { areas, onSelect, onReady, onFrame, 
     const next = THREE.MathUtils.clamp(len * k, controls.minDistance, controls.maxDistance);
     camera.position.copy(controls.target).add(off3.setLength(next));
   };
-  container.addEventListener('wheel', onWheel, { passive: false });
+  container.addEventListener('wheel', onWheel, { passive: false, capture: true });
   renderer.domElement.addEventListener('pointerdown', () => { controls.autoRotate = false; });
 
+  const v = new THREE.Vector3(), v2 = new THREE.Vector3();
+  const toScreen = (vec) => { vec.project(camera); return [(vec.x * 0.5 + 0.5) * w(), (-vec.y * 0.5 + 0.5) * h()]; };
   const ray = new THREE.Raycaster();
   let down = null;
   renderer.domElement.addEventListener('pointerdown', (e) => { down = [e.clientX, e.clientY]; });
+  // A tap (not a drag) selects the nearest place: first by its name or ground marker on screen,
+  // which is what a finger aims at, then by where it lands on the terrain.
   renderer.domElement.addEventListener('pointerup', (e) => {
-    if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 5) return;
+    if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > (e.pointerType === 'touch' ? 10 : 5)) return;
     const r = renderer.domElement.getBoundingClientRect();
-    ray.setFromCamera(new THREE.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1), camera);
+    const px = e.clientX - r.left, py = e.clientY - r.top;
+    const reach = e.pointerType === 'touch' ? 44 : 28;
+    let best = null, bd = reach;
+    Object.entries(pins).forEach(([s, p]) => {
+      const [lx, ly] = toScreen(v.set(p.x, p.y + (LIFT[s] || 4), p.z));
+      const [gx, gy] = toScreen(v.set(p.x, p.y, p.z));
+      const d = Math.min(Math.hypot(lx - px, ly - 12 - py), Math.hypot(gx - px, gy - py));
+      if (d < bd) { bd = d; best = s; }
+    });
+    if (best) { select(best); return; }
+    ray.setFromCamera(new THREE.Vector2((px / r.width) * 2 - 1, -(py / r.height) * 2 + 1), camera);
     const hit = ray.intersectObject(land)[0];
     if (!hit) return;
-    let best = null, bd = 3.2;
-    Object.entries(pins).forEach(([s, p]) => { const d = Math.hypot(p.x - hit.point.x, p.z - hit.point.z); if (d < bd) { bd = d; best = s; } });
-    if (best) select(best);
+    let near = null, nd = 3.2;
+    Object.entries(pins).forEach(([s, p]) => { const d = Math.hypot(p.x - hit.point.x, p.z - hit.point.z); if (d < nd) { nd = d; near = s; } });
+    if (near) select(near);
   });
 
   let shift = [0, 0], shiftTarget = [0, 0];
@@ -775,6 +797,13 @@ export async function createMap(container, { areas, onSelect, onReady, onFrame, 
         p.pulse.material.opacity = 0.7 * (1 - ph);
       } else p.pulse.material.opacity = 0;
     });
+    // keep the county in view however far it is slid
+    const tx = THREE.MathUtils.clamp(controls.target.x, -55, 50), tz = THREE.MathUtils.clamp(controls.target.z, -45, 35);
+    if (tx !== controls.target.x || tz !== controls.target.z) {
+      const dx = tx - controls.target.x, dz = tz - controls.target.z;
+      controls.target.x = tx; controls.target.z = tz;
+      camera.position.x += dx; camera.position.z += dz;
+    }
     controls.update();
     renderer.render(scene, camera);
     labels.render(scene, camera);
@@ -783,8 +812,6 @@ export async function createMap(container, { areas, onSelect, onReady, onFrame, 
   raf = requestAnimationFrame(loop);
   onReady?.({ terrain: terrain.source });
 
-  const v = new THREE.Vector3(), v2 = new THREE.Vector3();
-  const toScreen = (vec) => { vec.project(camera); return [(vec.x * 0.5 + 0.5) * w(), (-vec.y * 0.5 + 0.5) * h()]; };
   return {
     kind: 'stylized',
     select,
@@ -814,7 +841,7 @@ export async function createMap(container, { areas, onSelect, onReady, onFrame, 
       cancelAnimationFrame(raf);
       ro.disconnect();
       io.disconnect();
-      container.removeEventListener('wheel', onWheel);
+      container.removeEventListener('wheel', onWheel, { capture: true });
       controls.dispose();
       scene.traverse((o) => { o.geometry?.dispose?.(); o.material?.map?.dispose?.(); o.material?.dispose?.(); });
       renderer.dispose();

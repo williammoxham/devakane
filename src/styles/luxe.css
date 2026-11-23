@@ -697,3 +697,17 @@ html[data-hero='dark'] .gnav--over .gnav__cta { background: #fff !important; col
 .reader__ask { min-height: 38px; padding: 0 16px; border-radius: 999px; border: 0; background: var(--ink); color: #fff; font: 600 14px var(--sans); cursor: pointer; }
 .home-listings { position: relative; z-index: 2; background: var(--paper); }
 @media (max-width: 699px) { .reader__ask { font-size: 12.5px; padding: 0 12px; } .reader__bar { grid-template-columns: auto 1fr; } .reader__actions { grid-column: 1 / -1; justify-content: space-between; } }
+
+/* Map touch: the map owns gestures inside it; the page scrolls from the margins and the rail */
+.map3d__canvas, .map3d__canvas canvas { touch-action: none; }
+.map3d__how--touch { display: none; }
+@media (pointer: coarse) { .map3d__how--fine { display: none; } .map3d__how--touch { display: block; } }
+@media (max-width: 699px) {
+  .map3d__stage.is-draw { height: 74svh; min-height: 520px; }
+  .mrail { touch-action: pan-x pan-y; }
+}
+/* On touch screens the place names and the county card let gestures through to the map;
+   a tap near a name still opens it (handled in the map engine). */
+@media (pointer: coarse) {
+  .map3d__pin, .map3d__stage .mcard { pointer-events: none; }
+}

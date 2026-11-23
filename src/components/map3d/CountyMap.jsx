@@ -166,7 +166,8 @@ export default function CountyMap() {
     <section className="map3d" aria-labelledby="map3d-title">
       <div className="map3d__head container">
         <h2 id="map3d-title">Explore Santa Cruz County</h2>
-        <p>Scroll with two fingers or pinch to zoom, drag to turn the county, and tap a neighborhood to see what life there costs.</p>
+        <p className="map3d__how map3d__how--fine">Drag to turn the county, scroll or pinch to zoom, and tap a neighborhood to see what life there costs.</p>
+        <p className="map3d__how map3d__how--touch">One finger turns the county, pinch to zoom, two fingers move the map. Tap a neighborhood to see what life there costs.</p>
       </div>
 
       <div className={`map3d__stage ${sel ? 'has-sel' : ''} is-draw`} ref={stage}>
