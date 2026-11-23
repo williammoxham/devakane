@@ -1,0 +1,40 @@
+export default {
+  slug: 'selling-your-home-the-first-30-days',
+  title: 'Selling your home: the first 30 days',
+  dek: 'What happens between "we are thinking about selling" and the first open house, step by step, with a checklist you can keep.',
+  date: '2026-11-02',
+  topic: 'Selling',
+  cover: { scene: 'village', tone: ['#E3D3C4', '#8A5A48'] },
+  blocks: [
+    { type: 'p', text: 'A strong sale is mostly decided before the listing goes live. The work in the first month sets the price you can defend, the buyers you attract, and how smooth the escrow will be.' },
+    { type: 'h2', text: 'How the month unfolds' },
+    {
+      type: 'steps',
+      items: [
+        { title: 'Walk-through and pricing', when: 'Week 1', text: 'We walk the home together, talk about your timeline, and look at recent sales nearby. You leave with a realistic price range and a short list of what is worth fixing.' },
+        { title: 'Disclosures and inspections', when: 'Week 1 to 2', text: 'California sellers owe buyers a lot of disclosure. Starting early, and often ordering a pre-listing inspection, means fewer surprises and fewer renegotiations later.' },
+        { title: 'Repairs, paint, and staging', when: 'Week 2 to 3', text: 'Focus on what buyers notice in the first five minutes: light, smell, clutter, and anything that looks like deferred maintenance.' },
+        { title: 'Photos, video, and the story', when: 'Week 3', text: 'Professional photography, a floor plan, and a clear description of what it is like to live there. This is what buyers see first, so it gets real care.' },
+        { title: 'Coming soon and launch', when: 'Week 4', text: 'We build interest before the listing is live, then open the doors with a clear plan for showings, open houses, and how offers will be reviewed.' },
+      ],
+    },
+    { type: 'h2', text: 'Your prep checklist' },
+    { type: 'p', text: 'Check things off as you go. Your progress is saved in this browser so you can come back to it.' },
+    {
+      type: 'checklist',
+      id: 'seller-prep-v1',
+      items: [
+        'Gather permits and records for any remodels or additions',
+        'Find your HOA documents, if you have an HOA',
+        'List known issues, repairs, and when they were done',
+        'Schedule a pre-listing inspection',
+        'Fix leaks, sticky doors, and burned-out bulbs',
+        'Clear counters, closets, and the garage',
+        'Touch up paint in high-traffic areas',
+        'Tidy the yard and the front entry',
+        'Plan where pets and people go during showings',
+      ],
+    },
+    { type: 'quote', text: 'The first weekend on the market is the loudest your listing will ever be. Be ready for it.' },
+  ],
+};

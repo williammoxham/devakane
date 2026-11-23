@@ -1,0 +1,21 @@
+export default {
+  slug: 'finding-your-santa-cruz-neighborhood',
+  title: 'Finding your Santa Cruz neighborhood',
+  dek: 'Fog or sun, redwoods or surf, a walk to coffee or room for a garden. Answer four questions and see where you might fit.',
+  date: '2026-11-10',
+  topic: 'Neighborhoods',
+  cover: { scene: 'coast', tone: ['#B9D3D6', '#4E7C86'] },
+  blocks: [
+    { type: 'p', text: 'Santa Cruz County packs a lot into a short drive. You can go from cliffside fog to sunny redwood ridges in fifteen minutes, and every part of the county has a different daily rhythm.' },
+    { type: 'p', text: 'Before you look at a single listing, it helps to know which rhythm you want. This short quiz matches your answers to the neighborhoods that tend to fit.' },
+    { type: 'widget', name: 'NeighborhoodMatch' },
+    { type: 'h2', text: 'The fog line is real' },
+    { type: 'p', text: 'Summer marine layer can sit over the coast for most of the morning while Scotts Valley, Soquel, and the San Lorenzo Valley are already warm. If you want sun for a garden or a pool, look a little inland. If you like cool summers and ocean air, stay close to the water.' },
+    { type: 'h2', text: 'Highway 17 changes the math' },
+    { type: 'p', text: 'If you commute over the hill, every minute between your door and Highway 17 adds up. Scotts Valley and the north side of town make that drive simpler. If your work is local, remote, or to the south, Aptos and Watsonville open up.' },
+    { type: 'callout', title: 'Questions worth asking about any rural property', text: 'Is it on a well or a water district? Septic or sewer? Who maintains the road? What does fire insurance cost here? These shape both your budget and your daily life.' },
+    { type: 'h2', text: 'See them all on one map' },
+    { type: 'p', text: 'The neighborhoods page puts every area on a single map with what to expect in each. Filter by what matters to you and compare side by side.' },
+    { type: 'link', to: '/neighborhoods', text: 'Open the neighborhood map' },
+  ],
+};

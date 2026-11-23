@@ -1,0 +1,150 @@
+import { photos } from './photos.js';
+
+// Map positions are on an abstract 1000 x 640 canvas (not to scale).
+// traits are 0 to 3 and drive the "Find your neighborhood" quiz.
+// scene picks the illustrated plate: coast | village | redwoods | hills | farm | harbor
+// Add photo: '/images/your-file.jpg' to any entry to replace the illustration.
+
+export const neighborhoods = [
+  {
+    slug: 'westside',
+    name: 'Westside',
+    area: 'City of Santa Cruz',
+    pos: [318, 402],
+    scene: 'coast',
+    tone: ['#B9D3D6', '#4E7C86'],
+    tags: ['Beach', 'Walkable'],
+    line: 'West Cliff Drive, Natural Bridges, and the road up to UCSC.',
+    body: 'Bungalows and mid-century homes on a grid that runs to the cliffs. Mornings are often gray with marine layer; afternoons on West Cliff are hard to beat. Close to campus, Swift Street, and the Westside food and wine spots.',
+    traits: { coast: 3, village: 1, redwood: 0, space: 0, over17: 1, south: 0, sun: 0, walk: 2 },
+  },
+  {
+    slug: 'downtown-midtown',
+    name: 'Downtown and Midtown',
+    area: 'City of Santa Cruz',
+    pos: [385, 372],
+    scene: 'village',
+    tone: ['#D8CFC2', '#6C6258'],
+    tags: ['Walkable', 'Village'],
+    line: 'Pacific Avenue, Victorians, and the most walkable blocks in the county.',
+    body: 'Condos and townhomes near Pacific Avenue, older Victorians on the hills above, and Midtown along Soquel Avenue. Live music, the farmers market, and the San Lorenzo River levee path are all on foot.',
+    traits: { coast: 1, village: 3, redwood: 0, space: 0, over17: 2, south: 0, sun: 1, walk: 3 },
+  },
+  {
+    slug: 'seabright',
+    name: 'Seabright',
+    area: 'City of Santa Cruz',
+    pos: [425, 408],
+    scene: 'harbor',
+    tone: ['#C7D9D2', '#3F6B67'],
+    tags: ['Beach', 'Walkable'],
+    line: 'Between the river and the harbor, with a beach at the end of the street.',
+    body: 'Small lots, cottages, and some of the most sought-after streets in town. Seabright Beach, the small business strip on Seabright Avenue, and the yacht harbor are all close.',
+    traits: { coast: 3, village: 2, redwood: 0, space: 0, over17: 1, south: 0, sun: 1, walk: 3 },
+  },
+  {
+    slug: 'live-oak',
+    name: 'Live Oak',
+    area: 'Unincorporated',
+    pos: [470, 398],
+    scene: 'hills',
+    tone: ['#CFD8C4', '#5E6E4E'],
+    tags: ['Beach', 'Room to grow'],
+    line: 'Between the harbor and Capitola, with bigger lots than the city.',
+    body: 'A mix of ranch homes, newer builds, and larger parcels. Twin Lakes and Sunny Cove are nearby, and Highway 1 access is easy for getting around the county.',
+    traits: { coast: 2, village: 1, redwood: 0, space: 2, over17: 2, south: 1, sun: 1, walk: 1 },
+  },
+  {
+    slug: 'pleasure-point',
+    name: 'Pleasure Point',
+    area: 'Unincorporated',
+    pos: [508, 432],
+    scene: 'coast',
+    tone: ['#BFD8DD', '#2F6377'],
+    tags: ['Beach', 'Surf'],
+    line: 'East Cliff, 41st Avenue, and a surf break for every level.',
+    body: 'Beach cottages, rebuilt modern homes, and a neighborhood that runs on surf reports. The East Cliff walkway and the coffee spots on Portola Drive are the daily rhythm.',
+    traits: { coast: 3, village: 1, redwood: 0, space: 0, over17: 1, south: 1, sun: 1, walk: 2 },
+  },
+  {
+    slug: 'capitola',
+    name: 'Capitola',
+    area: 'City of Capitola',
+    pos: [552, 436],
+    scene: 'village',
+    tone: ['#E3D3C4', '#8A5A48'],
+    tags: ['Beach', 'Village'],
+    line: 'A small beach village with a wharf and colorful homes on the creek.',
+    body: 'The Village is compact and lively in summer. Housing ranges from condos near 41st Avenue to homes on Depot Hill and Jewel Box streets. Its own city, with its own services and character.',
+    traits: { coast: 3, village: 3, redwood: 0, space: 0, over17: 1, south: 1, sun: 2, walk: 3 },
+  },
+  {
+    slug: 'soquel',
+    name: 'Soquel',
+    area: 'Unincorporated',
+    pos: [568, 372],
+    scene: 'hills',
+    tone: ['#D6D9C0', '#6B6A43'],
+    tags: ['Room to grow', 'Sunny'],
+    line: 'Soquel Village, Soquel Creek, and hills that climb toward the summit.',
+    body: 'A small village core with more land as you head up Old San Jose Road. Often sunnier than the coast. Wineries, creekside homes, and acreage within a few minutes of the beach.',
+    traits: { coast: 1, village: 2, redwood: 2, space: 3, over17: 2, south: 1, sun: 2, walk: 1 },
+  },
+  {
+    slug: 'aptos',
+    name: 'Aptos',
+    area: 'Unincorporated',
+    pos: [652, 466],
+    scene: 'redwoods',
+    tone: ['#CFD6C6', '#3D5640'],
+    tags: ['Beach', 'Redwoods', 'Room to grow'],
+    line: 'Seacliff and Rio Del Mar beaches backed by the Forest of Nisene Marks.',
+    body: 'Beach neighborhoods along the bluffs, quiet streets in the hills, and a state forest at the edge of town. A good middle point for anyone who works south toward Monterey or north in Santa Cruz.',
+    traits: { coast: 2, village: 1, redwood: 2, space: 2, over17: 1, south: 2, sun: 2, walk: 1 },
+  },
+  {
+    slug: 'scotts-valley',
+    name: 'Scotts Valley',
+    area: 'City of Scotts Valley',
+    pos: [440, 262],
+    scene: 'hills',
+    tone: ['#DED7BE', '#7A6A3C'],
+    tags: ['Sunny', 'Commute', 'Room to grow'],
+    line: 'Above the fog line, right on Highway 17.',
+    body: 'Many people here commute over the hill, and the sun often shows up earlier than on the coast. Newer subdivisions, larger lots, and a straightforward drive to both Santa Cruz and the South Bay.',
+    traits: { coast: 0, village: 1, redwood: 2, space: 2, over17: 3, south: 0, sun: 3, walk: 0 },
+  },
+  {
+    slug: 'san-lorenzo-valley',
+    name: 'San Lorenzo Valley',
+    area: 'Felton, Ben Lomond, Boulder Creek',
+    pos: [322, 190],
+    scene: 'redwoods',
+    tone: ['#C3CEBD', '#2E4632'],
+    tags: ['Redwoods', 'Room to grow', 'Sunny'],
+    line: 'Cabins, creeks, and redwood forest along Highway 9.',
+    body: 'Small towns strung along the river, from Felton near Henry Cowell to Boulder Creek further up. More land and trees for the money. Ask about wells, septic, road maintenance, and fire insurance early.',
+    traits: { coast: 0, village: 1, redwood: 3, space: 3, over17: 2, south: 0, sun: 2, walk: 0 },
+  },
+  {
+    slug: 'watsonville',
+    name: 'Watsonville',
+    area: 'City of Watsonville',
+    pos: [800, 520],
+    scene: 'farm',
+    tone: ['#E1D7B8', '#7C6A34'],
+    tags: ['Room to grow', 'Sunny', 'Commute'],
+    line: 'The farm towns of the Pajaro Valley, with more home for the dollar.',
+    body: 'A historic downtown plaza, agricultural land all around, and quick access to Monterey County. Often the place where first-time buyers find a yard. Sunset and Palm beaches are close.',
+    traits: { coast: 1, village: 2, redwood: 0, space: 3, over17: 0, south: 3, sun: 2, walk: 1 },
+  },
+];
+
+export const neighborhoodTags = ['Beach', 'Walkable', 'Village', 'Redwoods', 'Sunny', 'Room to grow', 'Commute', 'Surf'];
+
+// Attach the photo for each neighborhood from the photo library.
+neighborhoods.forEach((n) => {
+  if (!n.photo && photos[n.slug]) n.photo = photos[n.slug];
+});
+
+export const bySlug = Object.fromEntries(neighborhoods.map((n) => [n.slug, n]));

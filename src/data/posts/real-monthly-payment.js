@@ -1,0 +1,27 @@
+export default {
+  slug: 'what-your-monthly-payment-really-looks-like',
+  title: 'What your monthly payment really looks like',
+  dek: 'The listing price is one number. The check you write every month is another. Here is how to see the real one before you fall for a house.',
+  date: '2026-11-18',
+  topic: 'Money',
+  cover: { scene: 'harbor', tone: ['#C7D9D2', '#3F6B67'] },
+  featured: true,
+  blocks: [
+    { type: 'p', text: 'Most people shop by price. Lenders, and your bank account, think in monthly payments. The gap between the two is where surprises live, so it is worth seeing the full picture early.' },
+    { type: 'h2', text: 'The four pieces of a payment' },
+    { type: 'p', text: 'A housing payment is usually four things bundled together: principal and interest on the loan, property taxes, homeowners insurance, and HOA dues if the property has them. If you put less than 20 percent down on a conventional loan, mortgage insurance is often added on top until you build enough equity.' },
+    { type: 'list', items: [
+      'Principal and interest: set by the loan amount, rate, and term.',
+      'Property tax: in California this starts near 1 percent of the purchase price, plus local bonds and assessments that vary by address.',
+      'Insurance: has been changing fast in California, especially near wildland areas. Get quotes before you are in contract.',
+      'HOA dues: common with condos and townhomes. Read the budget and reserve study, not just the monthly number.',
+    ] },
+    { type: 'h2', text: 'Try it with a real address in mind' },
+    { type: 'p', text: 'Move the sliders below. The breakdown updates as you go, so you can see which lever actually moves the payment.' },
+    { type: 'widget', name: 'PaymentCalculator' },
+    { type: 'callout', title: 'Why the tax line varies by street', text: 'Under Proposition 13 the base rate is 1 percent of assessed value, but voter-approved bonds and special assessments are added on top, and they differ from one tax rate area to the next. Ask for the actual tax rate for the parcel when you are serious about a home.' },
+    { type: 'h2', text: 'What to do next' },
+    { type: 'p', text: 'Talk to a lender before you start touring. A pre-approval gives you a real rate and a real ceiling, and it makes your offer stronger when the right house shows up.' },
+    { type: 'quote', text: 'Know your monthly number before you know your favorite kitchen.' },
+  ],
+};
