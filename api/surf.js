@@ -23,27 +23,39 @@ async function withTimeout(p, ms = 6000) {
   return Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), ms))]);
 }
 
-async function buoy() {
-  for (const b of BUOYS) {
-    try {
-      const r = await withTimeout(fetch(`https://www.ndbc.noaa.gov/data/realtime2/${b.id}.txt`, { headers: UA }));
-      if (!r.ok) continue;
-      const lines = (await r.text()).split('\n').filter((l) => l && !l.startsWith('#'));
-      // columns: YY MM DD hh mm WDIR WSPD GST WVHT DPD APD MWD PRES ATMP WTMP DEWP VIS PTDY TIDE
-      let wave = null, water = null;
-      for (const l of lines.slice(0, 24)) {
-        const c = l.trim().split(/\s+/);
-        const when = Date.UTC(+c[0], +c[1] - 1, +c[2], +c[3], +c[4]);
-        if (!wave && num(c[8]) !== null) {
-          wave = { heightFt: +(num(c[8]) * 3.28084).toFixed(1), periodS: num(c[9]), direction: compass(num(c[11])), directionDeg: num(c[11]), at: new Date(when).toISOString() };
-        }
-        if (!water && num(c[14]) !== null) water = { tempF: Math.round(num(c[14]) * 9 / 5 + 32), at: new Date(when).toISOString() };
-        if (wave && water) break;
+// Buoys go offline for days at a time, so readings older than this are ignored.
+const MAX_AGE = 6 * 3600e3;
+
+async function readBuoy(b) {
+  try {
+    const r = await withTimeout(fetch(`https://www.ndbc.noaa.gov/data/realtime2/${b.id}.txt`, { headers: UA }));
+    if (!r.ok) return null;
+    const lines = (await r.text()).split('\n').filter((l) => l && !l.startsWith('#'));
+    // columns: YY MM DD hh mm WDIR WSPD GST WVHT DPD APD MWD PRES ATMP WTMP DEWP VIS PTDY TIDE
+    let wave = null, water = null;
+    for (const l of lines.slice(0, 90)) {
+      const c = l.trim().split(/\s+/);
+      const when = Date.UTC(+c[0], +c[1] - 1, +c[2], +c[3], +c[4]);
+      if (Date.now() - when > MAX_AGE) break;
+      if (!wave && num(c[8]) !== null) {
+        wave = { heightFt: +(num(c[8]) * 3.28084).toFixed(1), periodS: num(c[9]), direction: compass(num(c[11])), directionDeg: num(c[11]), at: new Date(when).toISOString() };
       }
-      if (wave || water) return { wave, water, buoy: b };
-    } catch { /* try the next buoy */ }
+      if (!water && num(c[14]) !== null) water = { tempF: Math.round(num(c[14]) * 9 / 5 + 32), at: new Date(when).toISOString() };
+      if (wave && water) break;
+    }
+    return { wave, water, buoy: b };
+  } catch {
+    return null;
   }
-  return { wave: null, water: null, buoy: null };
+}
+
+// Ask both buoys at once; waves come from the first one with a fresh wave reading,
+// water temperature from the first with a fresh temperature.
+async function buoy() {
+  const all = (await Promise.all(BUOYS.map(readBuoy))).filter(Boolean);
+  const w = all.find((x) => x.wave);
+  const t = all.find((x) => x.water);
+  return { wave: w?.wave || null, water: t?.water || null, buoy: (w || t)?.buoy || null };
 }
 
 async function tides() {
@@ -53,6 +65,7 @@ async function tides() {
   const url = `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=deva_kane_site&begin_date=${ymd(now)}&end_date=${ymd(end)}&datum=MLLW&station=${TIDE_STATION}&time_zone=lst_ldt&units=english&interval=hilo&format=json`;
   try {
     const r = await withTimeout(fetch(url, { headers: UA }));
+    if (!r.ok) return [];
     const j = await r.json();
     return (j.predictions || []).map((p) => ({ time: p.t, ft: +Number(p.v).toFixed(1), type: p.type === 'H' ? 'high' : 'low' }));
   } catch {
