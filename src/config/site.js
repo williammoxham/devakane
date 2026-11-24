@@ -15,15 +15,26 @@ export const site = {
     officePhone: '(831) 469-8000',
     officePhoneHref: 'tel:+18314698000',
     email: 'deva.kane@cbrealty.com',
+    // Shown under his title in the bio
+    alsoKnownFor: 'Entrepreneur and local business owner',
     // Drop a portrait at /public/images/deva.jpg and set this to '/images/deva.jpg'
     portrait: headshot,
   },
   // TODO(Deva): replace with your real story. Kept in one place so it is easy to find.
   bio: [
     'Santa Cruz isn\u2019t just where Deva works. It\u2019s where he grew up, and he knows it the way only a local can: which streets catch the afternoon sun, where the fog likes to settle, and which corner caf\u00e9 feels like a second living room. He would love to help you find your place here.',
+    'Deva is also a local entrepreneur and business owner: he is one of the newest partners in Woodhouse Blending & Brewing in Santa Cruz. He invests in this town, not just in its houses.',
     'This is a place where the details matter: microclimates, fog lines, school boundaries, septic versus sewer, which streets flood in a big winter. Deva would rather you know all of it before you write an offer.',
     'If you are thinking about a move, even a year out, reach out. The best transactions start with a conversation, not a showing.',
   ],
+
+  // Deva's business outside real estate
+  business: {
+    name: 'Woodhouse Blending & Brewing',
+    role: 'Partner',
+    url: 'https://woodhousebrews.com',
+    blurb: 'one of the newest partners in Woodhouse Blending & Brewing, the Santa Cruz craft brewery and event venue',
+  },
 
   social: {
     facebook: '',

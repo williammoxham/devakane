@@ -70,6 +70,36 @@ function Bubble({ slug, onClose, innerRef }) {
 // Scale bar lengths that read cleanly.
 const NICE = [0.25, 0.5, 1, 2, 5, 10, 20];
 
+// Loading: survey contour rings that draw themselves and turn, with the real build progress.
+// Everything animates with transforms and opacity so it stays smooth while the map is computed.
+function MapLoader({ progress, label, done }) {
+  const rings = [
+    'M50 14 C70 12 88 28 86 50 C85 70 68 88 48 86 C28 84 12 68 14 48 C16 30 32 15 50 14 Z',
+    'M50 24 C65 22 77 34 76 50 C75 65 63 77 49 76 C34 75 23 63 24 49 C25 35 36 25 50 24 Z',
+    'M51 34 C61 33 67 41 66 51 C65 60 58 66 49 66 C40 65 34 58 35 49 C36 40 42 34 51 34 Z',
+    'M50 43 C55 43 58 47 57 51 C57 56 53 58 49 57 C45 57 42 53 43 49 C44 45 46 43 50 43 Z',
+  ];
+  return (
+    <div className={`mload ${done ? 'is-done' : ''}`} role="status" aria-live="polite" aria-hidden={done}>
+      <svg className="mload__mark" viewBox="0 0 100 100" aria-hidden="true">
+        <g className="mload__grid">
+          {[20, 35, 50, 65, 80].map((v) => <g key={v}><line x1={v} y1="4" x2={v} y2="96" /><line x1="4" y1={v} x2="96" y2={v} /></g>)}
+        </g>
+        {rings.map((d, i) => (
+          <g key={i} className="mload__ring" style={{ '--i': i }}>
+            <path d={d} pathLength="1" />
+          </g>
+        ))}
+        <g className="mload__sweep"><line x1="50" y1="50" x2="50" y2="3" /></g>
+        <circle cx="50" cy="50" r="1.8" className="mload__pin" />
+      </svg>
+      <p className="mload__label">{label || 'Drafting the county'}</p>
+      <div className="mload__bar"><i style={{ transform: `scaleX(${Math.max(0.04, progress)})` }} /></div>
+      <p className="mload__pct">{Math.round(progress * 100)}%</p>
+    </div>
+  );
+}
+
 export default function CountyMap() {
   const box = useRef(null);
   const stage = useRef(null);
@@ -80,7 +110,8 @@ export default function CountyMap() {
   const scale = useRef(null);
   const scaleKm = useRef(0);
   const [state, setState] = useState('loading'); // loading | ready | error
-  const [source, setSource] = useState('model'); // real elevation data, or the spot-elevation model
+  const [source, setSource] = useState('model');
+  const [load, setLoad] = useState({ p: 0, label: '' }); // real elevation data, or the spot-elevation model
   const [sel, setSel] = useState(null);
   const selRef = useRef(null);
   const reduced = usePrefersReducedMotion();
@@ -138,6 +169,7 @@ export default function CountyMap() {
           reducedMotion: reduced,
           onSelect: (s) => { selRef.current = s; setSel(s); },
           onFrame: place,
+          onProgress: (p, label) => setLoad({ p, label }),
           onReady: ({ terrain }) => { setSource(terrain); setState('ready'); },
         });
         if (disposed.current) { m.dispose(); return; }
@@ -172,9 +204,9 @@ export default function CountyMap() {
 
       <div className={`map3d__stage ${sel ? 'has-sel' : ''} is-draw`} ref={stage}>
         <div className="map3d__canvas" ref={box} role="application" aria-label="3D map of Santa Cruz County. Use the neighborhood buttons below the map to explore." />
-        {state !== 'ready' && (
-          <div className="map3d__status">{state === 'error' ? 'This device cannot show the 3D map. Use the neighborhood buttons below.' : 'Drafting the county'}</div>
-        )}
+        {state === 'error'
+          ? <div className="map3d__status">This device cannot show the 3D map. Use the neighborhood buttons below.</div>
+          : <MapLoader progress={state === 'ready' ? 1 : load.p} label={state === 'ready' ? 'Ready' : load.label} done={state === 'ready'} />}
 
         {!sel && state === 'ready' && (
           <div className="mcard">

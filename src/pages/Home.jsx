@@ -15,6 +15,7 @@ import { own } from '../data/photos.js';
 import { neighborhoods } from '../data/neighborhoods.js';
 import { fmtDate } from '../data/posts/index.js';
 import { useJournal } from '../lib/journal.js';
+import { Testimonials, WorkWithDeva, Newsletter, GetInTouch } from '../components/home/Sections.jsx';
 import { useListings } from '../lib/listings.js';
 import ListingCard from '../components/listings/ListingCard.jsx';
 import { useScrollProgress } from '../lib/hooks.js';
@@ -57,19 +58,28 @@ function HomeListings() {
   const { listings } = useListings();
   const navigate = useNavigate();
   const live = listings.filter((l) => l.status !== 'Sold').slice(0, 3);
-  if (!live.length) return null;
   return (
     <section className="section home-listings" aria-labelledby="hl-title">
       <div className="container">
         <div className="section__head">
-          <h2 id="hl-title">Deva’s listings</h2>
-          <Link className="textlink" to="/homes#featured">See all</Link>
+          <h2 id="hl-title">Featured properties</h2>
+          <Link className="textlink" to="/homes#featured">View all</Link>
         </div>
-        <ul className="listings">
-          {live.map((l) => (
-            <li key={l.id}><ListingCard l={l} onOpen={(x) => navigate(`/homes?home=${encodeURIComponent(x.slug)}`)} /></li>
-          ))}
-        </ul>
+        {live.length > 0 ? (
+          <ul className="listings">
+            {live.map((l) => (
+              <li key={l.id}><ListingCard l={l} onOpen={(x) => navigate(`/homes?home=${encodeURIComponent(x.slug)}`)} /></li>
+            ))}
+          </ul>
+        ) : (
+          <div className="hl-empty">
+            <p>New listings often go to people on Deva’s list before they hit the big sites. Search everything on the market now, or ask to hear first.</p>
+            <div className="hl-empty__ctas">
+              <Link className="btn btn--dark" to="/homes">Search homes for sale</Link>
+              <button type="button" className="btn btn--ghost" onClick={() => openContact('new listings')}>Get new listings first</button>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
@@ -110,24 +120,22 @@ function JournalPreview() {
   );
 }
 
+// Order follows a proven agent-site flow: hero with search and valuation, who Deva is, how he helps,
+// featured homes, client stories, neighborhoods, home value, the agent profile, resources, the blog,
+// newsletter, and a way to get in touch. The 3D map stays right after Deva's introduction.
 export default function Home() {
   return (
     <>
       <div className="zoom"><PhotoHero /></div>
       <MeetDeva />
-      <HomeListings />
       <CountyMap />
-      <DayPhotos />
-      <Market />
-      <Bento />
-      <WhyOwn />
-      <NeighborhoodRail />
       <ServiceCards />
-      <Highlights />
-      <JournalPreview />
+      <HomeListings />
+      <Testimonials />
+      <NeighborhoodRail />
       <section className="value" aria-labelledby="value-title">
         <div className="value__media">
-          <Plate photo={own.cliffSunset} alt="" width={1600} />
+          <Plate photo={own.cliffs} alt="" width={1600} />
         </div>
         <div className="value__body">
           <h2 id="value-title">What is your home worth today?</h2>
@@ -138,6 +146,15 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <WorkWithDeva />
+      <Highlights />
+      <Market />
+      <Bento />
+      <WhyOwn />
+      <DayPhotos />
+      <JournalPreview />
+      <Newsletter />
+      <GetInTouch />
     </>
   );
 }

@@ -1,33 +1,12 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import HeroSearch from './HeroSearch.jsx';
-import { usePacificTime } from '../lib/hooks.js';
-import { skyAt, nightAt, fmtHour } from '../lib/sky.js';
+import { openContact } from './ContactModal.jsx';
 import { photos } from '../data/photos.js';
 
-// Steamer Lane, color-graded to the actual time of day in Santa Cruz.
-// Add ?hour=18.5 to the URL to preview any hour.
-
-function phase(h) {
-  if (h < 5) return 'Late night';
-  if (h < 7) return 'First light';
-  if (h < 11) return 'Morning';
-  if (h < 15) return 'Midday';
-  if (h < 17) return 'Afternoon';
-  if (h < 19.5) return 'Golden hour';
-  if (h < 21) return 'Dusk';
-  return 'Evening';
-}
+// The hero: an iconic Santa Cruz sunset, shown as photographed.
 
 export default function PhotoHero() {
-  const now = usePacificTime();
-  const override = useMemo(() => {
-    const v = new URLSearchParams(window.location.search).get('hour');
-    return v !== null && !Number.isNaN(Number(v)) ? Math.min(23.99, Math.max(0, Number(v))) : null;
-  }, []);
-  const h = override ?? now.decimal;
-  const sky = skyAt(h);
-  const night = nightAt(h);
   const [failed, setFailed] = useState(false);
 
   const [scroll, setScroll] = useState(0);
@@ -62,21 +41,15 @@ export default function PhotoHero() {
         {!failed && (
           <img
             src={hero.src(2400)}
-                        alt="Sunset over the water on the Santa Cruz coast"
+            alt="Sunset over the water on the Santa Cruz coast"
             fetchpriority="high"
             style={{ objectPosition: hero.focus }}
             onError={() => setFailed(true)}
           />
         )}
       </div>
-      <div className="phero__grade" style={{ background: `linear-gradient(180deg, ${sky.top}, ${sky.bot})` }} aria-hidden="true" />
-      <div className="phero__night" style={{ opacity: night * 0.55 }} aria-hidden="true" />
       <div className="phero__scrim" aria-hidden="true" />
 
-      <p className="phero__clock">
-        <span className="phero__dot" aria-hidden="true" />
-        {fmtHour(h)} in Santa Cruz. {phase(h)}.
-      </p>
 
       <div className="phero__body" style={{ transform: `translateY(${scroll * -40}px)` }}>
         <h1>
@@ -86,6 +59,13 @@ export default function PhotoHero() {
         <HeroSearch />
       </div>
 
+      <div className="phero__foot">
+        <p className="phero__caption">Iconic Santa Cruz sunsets</p>
+          <div className="phero__ctas">
+            <button type="button" className="btn btn--light" onClick={() => openContact('my home value')}>What’s my home worth?</button>
+            <Link className="btn btn--ghost-light" to="/about">Meet Deva</Link>
+          </div>
+      </div>
       <Link className="phero__credit" to="/credits">Photo: Will Moxham</Link>
     </section>
   );

@@ -8,10 +8,13 @@ import { useJournal } from '../lib/journal.js';
 import { fmtDate } from '../data/posts/index.js';
 import { breaks, camsMore, outdoors, shops, lifestyleMatch, directions } from '../data/santaCruzLife.js';
 import { bySlug } from '../data/neighborhoods.js';
-import { photos } from '../data/photos.js';
+import { photos, own } from '../data/photos.js';
+import { site } from '../config/site.js';
+import { openContact } from '../components/ContactModal.jsx';
 
 const SECTIONS = [
   { id: 'latest', label: 'Latest' },
+  { id: 'woodhouse', label: 'Woodhouse' },
   { id: 'surf', label: 'Surf Watch' },
   { id: 'outdoors', label: 'Trails' },
   { id: 'shops', label: 'Local shops' },
@@ -154,6 +157,30 @@ function Breaks() {
   );
 }
 
+// Deva off the clock: his business in town.
+function Woodhouse() {
+  const b = site.business;
+  return (
+    <section id="woodhouse" className="jsec wh">
+      <div className="container wh__grid">
+        <div className="wh__media">
+          <Plate photo={own.woodhouse} alt="A can of Woodhouse Blending & Brewing beer on a log at sunset above Santa Cruz" sun={false} />
+        </div>
+        <div className="wh__text">
+          <p className="wh__kicker">Off the clock</p>
+          <h2>Local business owner, too</h2>
+          <p className="wh__lede">Deva doesn’t just sell Santa Cruz. He’s invested in it. He is {b.blurb}.</p>
+          <p>Ask him about it over a pint. It’s also a pretty good place to talk about houses, neighborhoods and what the market is really doing.</p>
+          <div className="wh__ctas">
+            <a className="btn btn--dark" href={b.url} target="_blank" rel="noreferrer">Visit Woodhouse</a>
+            <button type="button" className="btn btn--ghost" onClick={() => openContact('meeting up at Woodhouse')}>Meet Deva for a pint</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Outdoors() {
   const [feature, ...rest] = outdoors;
   return (
@@ -255,7 +282,7 @@ export default function Journal() {
       <LocalNav title="Journal" links={SECTIONS} revealAfter={360} />
       <header className="page__head container jhead">
         <h1>Journal</h1>
-        <p className="lede">Real estate in Santa Cruz County, and the life that comes with it. Market notes and buying guides, plus the surf report, trails and local spots from someone who grew up here and spends his free time in the water.</p>
+        <p className="lede">Real estate in Santa Cruz County, and the life that comes with it. Market notes and buying guides, plus the surf report, trails and local spots, from a Santa Cruz native, surfer and local business owner.</p>
         <nav className="jhead__jump" aria-label="On this page">
           {SECTIONS.map((s) => (
             <a key={s.id} href={`#${s.id}`} onClick={(e) => { e.preventDefault(); document.getElementById(s.id)?.scrollIntoView({ behavior: 'smooth' }); }}>{s.label}</a>
@@ -263,6 +290,7 @@ export default function Journal() {
         </nav>
       </header>
       <Latest />
+      <Woodhouse />
       <section id="surf" className="jsec surf">
         <SurfWatch />
         <Breaks />

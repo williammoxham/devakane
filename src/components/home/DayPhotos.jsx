@@ -6,10 +6,10 @@ import { photos, own } from '../../data/photos.js';
 // One pinned scene: scrolling moves the clock through a day in Santa Cruz,
 // crossfading real photos and grading them to the hour.
 const STAGES = [
-  { hour: 7, label: 'Morning', photo: own.ridge, title: 'Mornings start under the marine layer.', text: 'Cool and gray down by the water. Climb a few hundred feet and you are often above it.' },
+  { hour: 7, label: 'Morning', photo: own.bluffMorning, title: 'Mornings start under the marine layer.', text: 'Cool and gray down by the water. Climb a few hundred feet and you are often above it.' },
   { hour: 11, label: 'Late morning', photo: photos['downtown-midtown'], title: 'Downtown wakes up.', text: 'Coffee, bookstores, and the farmers market, all within a few blocks of Pacific Avenue.' },
   { hour: 14.5, label: 'Afternoon', photo: own.northCoast, title: 'Afternoons belong to the water.', text: 'Surf checks, long beach walks, and a breeze that keeps the heat away.' },
-  { hour: 18, label: 'Golden hour', photo: own.sunset, title: 'Then the bay turns gold.', text: 'Every west-facing window in the county earns its keep at this hour.' },
+  { hour: 18, label: 'Golden hour', photo: own.davenportSunset, title: 'Then the bay turns gold.', text: 'Every west-facing window in the county earns its keep at this hour.' },
   { hour: 19.5, label: 'Evening', photo: own.cliffSunset, title: 'And the sky puts on a show.', text: 'Every hour looks different here. So does every neighborhood.' },
 ];
 

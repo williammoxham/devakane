@@ -31,7 +31,7 @@ const REASONS = [
     title: 'Ownership here has paid off.',
     text: 'Limited land between the mountains and the bay has kept demand strong. Past growth is no promise of future gains, but owners here have built real wealth.',
     tone: 'photo',
-    photo: own.downtown,
+    photo: own.liveOak,
   },
   {
     fig: '$500K',

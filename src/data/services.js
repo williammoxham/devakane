@@ -5,7 +5,7 @@ const photos = { ...lib, own };
 export const services = [
   {
     id: 'buying',
-    photo: photos.westside,
+    photo: photos.own.coastCliffs,
     eyebrow: 'Buying',
     title: 'Find the right home. Then win it.',
     scene: 'coast',
@@ -20,7 +20,7 @@ export const services = [
   },
   {
     id: 'selling',
-    photo: photos.own.cliffSunset,
+    photo: photos.own.cove,
     eyebrow: 'Selling',
     title: 'Prepare. Price. Launch.',
     scene: 'village',
@@ -49,7 +49,7 @@ export const services = [
   },
   {
     id: 'coastal',
-    photo: photos.own.northCoast,
+    photo: photos.own.rockyCoast,
     eyebrow: 'Coastal and luxury',
     title: 'Homes on the edge of the continent.',
     scene: 'harbor',
@@ -94,9 +94,9 @@ export const services = [
 ];
 
 export const highlights = [
-  { photo: photos['downtown-midtown'], title: 'Priced from real sales, not from hope.', text: 'Recent comparable sales set a range you can defend when buyers push back.', scene: 'village', tone: ['#E3D3C4', '#8A5A48'] },
-  { photo: photos['live-oak'], title: 'Disclosures done before day one.', text: 'Fewer surprises in escrow means fewer renegotiations.', scene: 'hills', tone: ['#CFD8C4', '#5E6E4E'] },
-  { photo: photos.own.sunset, title: 'A launch, not just a listing.', text: 'Photography, a floor plan, and a story about how it feels to live there.', scene: 'harbor', tone: ['#C7D9D2', '#3F6B67'] },
+  { photo: photos.own.soquelVillage, title: 'Priced from real sales, not from hope.', text: 'Recent comparable sales set a range you can defend when buyers push back.', scene: 'village', tone: ['#E3D3C4', '#8A5A48'] },
+  { photo: photos.own.scottsValley, title: 'Disclosures done before day one.', text: 'Fewer surprises in escrow means fewer renegotiations.', scene: 'hills', tone: ['#CFD8C4', '#5E6E4E'] },
+  { photo: photos.own.pantherBeach, title: 'A launch, not just a listing.', text: 'Photography, a floor plan, and a story about how it feels to live there.', scene: 'harbor', tone: ['#C7D9D2', '#3F6B67'] },
   { photo: photos.lighthouseField, title: 'Offers you can actually compare.', text: 'Price, terms, and timelines side by side, so the best offer is clear.', scene: 'coast', tone: ['#BFD8DD', '#2F6377'] },
   { photo: photos['san-lorenzo-valley'], title: 'Know the land before you buy it.', text: 'Wells, septic, roads, and fire insurance, explained before you commit.', scene: 'redwoods', tone: ['#C3CEBD', '#2E4632'] },
 ];

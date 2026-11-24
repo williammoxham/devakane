@@ -198,6 +198,10 @@ export function heightAt(p) {
   return Math.max(2, m) * VERT;
 }
 
+// Give the browser a frame so the loading animation and progress keep moving during the build.
+const breathe = () => new Promise((r) => requestAnimationFrame(() => r()));
+const noop = () => {};
+
 // ---------- shared GLSL ----------
 const GLSL_COMMON = /* glsl */ `
 uniform vec2 uFocus; uniform float uRadius; uniform vec3 uPaper; uniform vec3 uInk;
@@ -232,7 +236,7 @@ const CITIES = [
   [[36.972, -121.99], 1.6], [[36.972, -121.925], 1.5], [[36.955, -121.87], 1.3], [[36.94, -121.85], 1.0], [[37.09, -122.087], 0.7],
 ].map(([ll, r]) => [project(ll), r * KM]);
 
-function buildTerrain(uniforms, sunDir) {
+async function buildTerrain(uniforms, sunDir, progress = noop) {
   let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
   ring.forEach(([x, z]) => { minX = Math.min(minX, x); maxX = Math.max(maxX, x); minZ = Math.min(minZ, z); maxZ = Math.max(maxZ, z); });
   const N = 300;
@@ -240,7 +244,9 @@ function buildTerrain(uniforms, sunDir) {
   const V = (N + 1) * (N + 1);
   const pos = new Float32Array(V * 3), uv = new Float32Array(V * 2);
   const H = new Float32Array(V), DC = new Float32Array(V), RV = new Float32Array(V), ins = new Uint8Array(V);
+  let lastYield = performance.now();
   for (let j = 0, k = 0; j <= N; j++) {
+    if (performance.now() - lastYield > 40) { progress(j / N); await breathe(); lastYield = performance.now(); }
     for (let i = 0; i <= N; i++, k++) {
       let p = [minX + i * sx, minZ + j * sz];
       const isIn = inside(p);
@@ -266,7 +272,7 @@ function buildTerrain(uniforms, sunDir) {
   geo.setIndex(idx);
   geo.computeVertexNormals();
 
-  const tex = new THREE.CanvasTexture(paintLand({ N, H, DC, RV, minX, maxX, minZ, maxZ, sx, sz }));
+  const tex = new THREE.CanvasTexture(await paintLand({ N, H, DC, RV, minX, maxX, minZ, maxZ, sx, sz }, progress.paint || noop));
   tex.colorSpace = THREE.SRGBColorSpace;
   tex.flipY = false;
   tex.anisotropy = 8;
@@ -309,7 +315,7 @@ function buildTerrain(uniforms, sunDir) {
 
 // The realistic land layer, painted once into a texture: golden grass on sun-facing slopes,
 // redwood and oak on the shady ones, beaches, towns, and the Pajaro Valley's field patchwork.
-function paintLand({ N, H, DC, RV, minX, maxX, minZ, maxZ, sx, sz }) {
+async function paintLand({ N, H, DC, RV, minX, maxX, minZ, maxZ, sx, sz }, progress = noop) {
   const T = window.innerWidth < 700 ? 1536 : 2048;
   const cv = document.createElement('canvas');
   cv.width = cv.height = T;
@@ -330,7 +336,9 @@ function paintLand({ N, H, DC, RV, minX, maxX, minZ, maxZ, sx, sz }) {
   };
   const FIELDS = [[104, 140, 72], [140, 160, 86], [170, 156, 108], [86, 114, 62], [194, 178, 128], [122, 132, 70]];
   const rot = Math.cos(0.42), rsn = Math.sin(0.42);
+  let lastYield = performance.now();
   for (let py = 0; py < T; py++) {
+    if (performance.now() - lastYield > 40) { progress(py / T); await breathe(); lastYield = performance.now(); }
     const z = minZ + ((py + 0.5) / T) * (maxZ - minZ);
     const gz = (z - minZ) / sz;
     for (let px = 0; px < T; px++) {
@@ -510,8 +518,12 @@ function drape(latlons, lift = 0.07, step = 0.35, smooth = true) {
 const HWY1 = [[37.098, -122.279], [37.06, -122.235], [37.011, -122.196], [36.985, -122.135], [36.958, -122.08], [36.968, -122.045], [36.983, -122.02], [36.986, -121.99], [36.982, -121.96], [36.974, -121.93], [36.962, -121.9], [36.945, -121.865], [36.925, -121.825], [36.905, -121.79], [36.89, -121.77]];
 const HWY17 = [[36.983, -122.02], [37.01, -122.018], [37.035, -122.016], [37.055, -122.012], [37.08, -121.998], [37.1, -121.985], [37.113, -121.978]];
 
-export async function createMap(container, { areas, onSelect, onReady, onFrame, reducedMotion }) {
+export async function createMap(container, { areas, onSelect, onReady, onFrame, onProgress, reducedMotion }) {
+  const report = (f, label) => onProgress?.(Math.max(0, Math.min(1, f)), label);
+  report(0.02, 'Loading elevation');
   await loadDEM();
+  report(0.12, 'Surveying the terrain');
+  await breathe();
   const w = () => container.clientWidth, h = () => container.clientHeight;
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
   renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
@@ -567,7 +579,11 @@ export async function createMap(container, { areas, onSelect, onReady, onFrame, 
 
   const uniforms = sharedUniforms();
   scene.add(buildSheet(uniforms));
-  const land = buildTerrain(uniforms, sunDir);
+  const terrainProgress = (f) => report(0.14 + f * 0.36, 'Surveying the terrain');
+  terrainProgress.paint = (f) => report(0.5 + f * 0.4, 'Painting the land');
+  const land = await buildTerrain(uniforms, sunDir, terrainProgress);
+  report(0.92, 'Inking the contours');
+  await breathe();
   scene.add(land);
   const section = buildSection(uniforms);
   scene.add(section.mesh);
@@ -810,6 +826,7 @@ export async function createMap(container, { areas, onSelect, onReady, onFrame, 
     onFrame?.();
   };
   raf = requestAnimationFrame(loop);
+  report(1, 'Ready');
   onReady?.({ terrain: terrain.source });
 
   return {

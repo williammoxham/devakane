@@ -41,6 +41,13 @@ export const own = {
   watsonvilleFarms: local('watsonvilleFarms', 'watsonville-farms.jpg', { title: 'Farm fields of the Pajaro Valley', focus: '50% 55%', author: '', credit: 'Photo provided by Will Moxham.' }),
   soquelVillage: local('soquelVillage', 'soquel.jpg', { title: 'Soquel Village', focus: '50% 55%', author: '', credit: 'Photo provided by Will Moxham.' }),
   cliffSunset: local('cliffSunset', 'cliff-sunset.jpg', { title: 'Sunset over the cliffs', focus: '50% 50%' }),
+  bluffMorning: local('bluffMorning', 'bluff-morning.jpg', { title: 'Morning light on the bluffs', focus: '50% 60%' }),
+  coastCliffs: local('coastCliffs', 'coast-cliffs.jpg', { title: 'Cliffs and open beach on the north coast', focus: '50% 45%' }),
+  davenportSunset: local('davenportSunset', 'davenport-sunset.jpg', { title: 'Sunset over the north coast', focus: '50% 42%' }),
+  rockyCoast: local('rockyCoast', 'rocky-coast.jpg', { title: 'Headlands and open ocean', focus: '60% 50%' }),
+  cove: local('cove', 'cove.jpg', { title: 'A wave wrapping into a coastal cove', focus: '50% 55%' }),
+  pantherBeach: local('pantherBeach', 'panther-beach.jpg', { title: 'Beach and sandstone cliffs on the north coast', focus: '50% 45%' }),
+  woodhouse: local('woodhouse', 'woodhouse-sunset.jpg', { title: 'Woodhouse Blending & Brewing at sunset', focus: '50% 40%' }),
 };
 
 export const photos = {
@@ -73,5 +80,7 @@ export const photos = {
 
 // Deva's headshot, bundled with the site.
 export const headshot = `${import.meta.env.BASE_URL}images/deva.jpg`;
+// Close-up headshot for the Meet Deva section on the home page.
+export const headshotCloseUp = `${import.meta.env.BASE_URL}images/deva-headshot.jpg`;
 
 export const photoFor = (key) => photos[key] || null;
