@@ -80,7 +80,7 @@ export const photos = {
 
 // Deva's headshot, bundled with the site.
 export const headshot = `${import.meta.env.BASE_URL}images/deva.jpg`;
-// Close-up headshot for the Meet Deva section on the home page.
-export const headshotCloseUp = `${import.meta.env.BASE_URL}images/deva-headshot.jpg`;
+// Portrait (blue suit, seated) for the Meet Deva section on the home page.
+export const headshotCloseUp = `${import.meta.env.BASE_URL}images/deva-meet.jpg`;
 
 export const photoFor = (key) => photos[key] || null;

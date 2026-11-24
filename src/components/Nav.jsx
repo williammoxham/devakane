@@ -18,12 +18,15 @@ function MenuLink({ link, onGo }) {
   return <Link to={link.to} onClick={onGo}>{link.label}</Link>;
 }
 
+// Pages that open with a full-screen photo, so the bar starts transparent over it.
+const HERO_PAGES = ['/', '/journal'];
+
 export default function Nav() {
   const { pathname, search, hash } = useLocation();
   const [menu, setMenu] = useState(null); // id of the open flyout, or 'search'
   const [mobile, setMobile] = useState(false);
   const [section, setSection] = useState(null);
-  const [over, setOver] = useState(pathname === '/');
+  const [over, setOver] = useState(HERO_PAGES.includes(pathname));
   const timer = useRef(0);
 
   const close = () => {
@@ -34,7 +37,7 @@ export default function Nav() {
   useEffect(close, [pathname, search, hash]);
 
   useEffect(() => {
-    const onScroll = () => setOver(pathname === '/' && window.scrollY < window.innerHeight * 0.85);
+    const onScroll = () => setOver(HERO_PAGES.includes(pathname) && window.scrollY < window.innerHeight * 0.85);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);

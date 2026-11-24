@@ -85,3 +85,46 @@ export const lifestyleMatch = [
   { want: 'Trails out the back door', areas: ['san-lorenzo-valley', 'scotts-valley', 'aptos'], note: 'More land and trees for the money. Ask about wells, septic and fire insurance early.' },
   { want: 'Village life and the beach', areas: ['capitola', 'soquel', 'live-oak'], note: 'Walkable main streets, good schools nearby, and a short ride to the sand.' },
 ];
+
+// ---------------------------------------------------------------------------
+// The local's guide: coffee, beer and a full day out.
+// Every place below was checked as open in November 2026. Hours change, so check before you go.
+
+// A day in Santa Cruz, in order, from first light to last call.
+export const dayPlan = [
+  { when: 'Dawn', title: 'Coffee across from Steamer Lane', place: 'Shrine Coffee, Santa Cruz', note: 'Shrine Coffee sits on Lighthouse Point, right across West Cliff from the Lane. Grab a cup and check the lineup before you decide where to paddle out.', photo: 'bluffMorning' },
+  { when: 'Morning', title: 'Walk West Cliff to Natural Bridges', place: 'Natural Bridges State Beach, Santa Cruz', note: 'About two miles of bluff-top path from the lighthouse to the last natural arch. Surfers, harbor seals and some of the most valuable homes in town.', photo: 'cliffs' },
+  { when: 'Midday', title: 'Lunch on Pacific Avenue', place: 'Mariposa Coffee Bar, 1010 Pacific Ave, Santa Cruz', note: 'Downtown is easy on foot. Mariposa pours Cuban and Vietnamese coffee with an all-vegetarian kitchen, a few doors from the bookstores and shops.', photo: 'downtown' },
+  { when: 'Afternoon', title: 'Into the redwoods', place: 'Henry Cowell Redwoods State Park, Felton', note: 'Fifteen minutes up Highway 9 and you are under old-growth redwoods. Pogonip is even closer if you want to stay in town.', photo: 'redwoods' },
+  { when: 'Sunset', title: 'Golden hour on East Cliff', place: 'Pleasure Point, Santa Cruz', note: 'Walk the East Cliff path from 36th to 41st Avenue and watch the last sets roll through the reef.', photo: 'cliffSunset' },
+  { when: 'Evening', title: 'End the day at Woodhouse', place: 'Woodhouse Blending & Brewing, 119 Madrone St, Santa Cruz', note: 'Small batch beer, music and art in a corner of town most visitors never find. Ask for Deva.', photo: 'woodhouse' },
+];
+
+// The coffee scene. `area` groups them on the page.
+export const coffee = [
+  { name: 'Verve Coffee Roasters', area: 'Downtown, 41st Ave and Seabright', note: 'The Santa Cruz roaster that went national. The Pacific Avenue café is the classic; the 41st Avenue shop is the surfers’ stop.', q: 'Verve Coffee Roasters Pacific Ave Santa Cruz' },
+  { name: 'Cat & Cloud', area: 'Pleasure Point', note: 'Started by former Verve baristas in 2016 at 36th and Portola. Now in Downtown, the Westside and Aptos too.', q: 'Cat & Cloud Coffee 3600 Portola Dr Santa Cruz' },
+  { name: 'Shrine Coffee', area: 'West Cliff', note: 'A nonprofit coffeehouse in the gardens of the Shrine of St. Joseph, facing Steamer Lane. The best view with your latte in town.', q: 'Shrine Coffee 544 West Cliff Dr Santa Cruz' },
+  { name: '11th Hour Coffee', area: 'Westside', note: 'Locally roasted and serious about it, tucked into the Swift Street Courtyard with the breweries and wineries.', q: '11th Hour Coffee 402 Ingalls St Santa Cruz' },
+  { name: 'Mariposa Coffee Bar', area: 'Downtown', note: 'Cuban cafecitos and Vietnamese phin coffee from two best friends who grew it from a pop-up.', q: 'Mariposa Coffee Bar 1010 Pacific Ave Santa Cruz' },
+  { name: 'Santa Cruz Coffee Roasting Co.', area: 'Downtown', note: 'The downtown institution, roasting since 1978, with hand-poured cups at the BrewBar.', q: 'Santa Cruz Coffee Roasting Company 1330 Pacific Ave' },
+  { name: 'Hidden Fortress', area: 'Downtown', note: 'Farmers market favorite turned walk-up window inside Cruzio Works. Organic beans, many from women-owned farms.', q: 'Hidden Fortress Coffee 877 Cedar St Santa Cruz' },
+];
+
+// The beer trail. Woodhouse is featured separately on the page.
+export const breweries = [
+  { name: 'Humble Sea Brewing', area: 'Westside', note: 'Hazy IPAs, a big dog-friendly beer garden and a following well beyond Santa Cruz. Started by three San Lorenzo Valley friends.', q: 'Humble Sea Brewing 820 Swift St Santa Cruz' },
+  { name: 'Santa Cruz Mountain Brewing', area: 'Westside', note: 'Organic brewing since 2005 in the Swift Street Courtyard, now owned by the people behind Sante Adairius and Private Press.', q: 'Santa Cruz Mountain Brewing 402 Ingalls St Santa Cruz' },
+  { name: 'Sante Adairius Rustic Ales', area: 'Capitola', note: 'Farmhouse ales and barrel-aged sours with a national cult following. There is also the Portal taproom in Midtown.', q: 'Sante Adairius Rustic Ales 103 Kennedy Dr Capitola' },
+  { name: 'Discretion Brewing', area: 'Soquel', note: 'Solar powered, dog friendly and serious about food. A bright taproom built for a long afternoon.', q: 'Discretion Brewing 2703 41st Ave Soquel' },
+  { name: 'Steel Bonnet Brewing', area: 'Scotts Valley', note: 'Classic IPAs and English-style ales that sell out fast, just over the hill.', q: 'Steel Bonnet Brewing 20 Victor Square Scotts Valley' },
+  { name: 'Fruition Brewing', area: 'Watsonville', note: 'South county’s taproom, with First Friday art shows and trivia nights.', q: 'Fruition Brewing 918 E Lake Ave Watsonville' },
+];
+
+// What happens around town every week or month.
+export const aroundTown = [
+  { what: 'Downtown Farmers Market', when: 'Wednesdays', where: 'Downtown Santa Cruz' },
+  { what: 'Westside Farmers Market', when: 'Saturdays, 9 am to 1 pm', where: 'Mission St and Western Dr' },
+  { what: 'Live Oak Farmers Market', when: 'Sundays, 9 am to 1 pm', where: '15th Ave and East Cliff Dr' },
+  { what: 'First Friday', when: 'First Friday of every month', where: 'Galleries and studios countywide' },
+];

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
+import { loadSurf } from '../../lib/surf.js';
 
-const API = import.meta.env.VITE_API_BASE || '';
 const parseLocal = (t) => { const [d, hm] = t.split(' '); const [y, m, day] = d.split('-').map(Number); const [h, mi] = hm.split(':').map(Number); return new Date(y, m - 1, day, h, mi); };
 const clock = (d) => d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
 const dayName = (d) => d.toLocaleDateString('en-US', { weekday: 'short' });
@@ -68,8 +68,7 @@ export default function SurfWatch() {
   const [state, setState] = useState('loading');
   useEffect(() => {
     let live = true;
-    fetch(`${API}/api/surf`)
-      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+    loadSurf()
       .then((j) => { if (live) { setD(j); setState('ok'); } })
       .catch(() => live && setState('off'));
     return () => { live = false; };
@@ -86,6 +85,8 @@ export default function SurfWatch() {
 
   const w = d?.waves, water = d?.water, wx = d?.weather;
   const dash = state === 'loading' ? '…' : '–';
+  // Once loaded, a missing reading says why instead of showing a bare dash.
+  const missing = (what) => (state === 'loading' ? what : 'Offshore buoy not reporting right now');
 
   return (
     <div className="sw">
@@ -95,19 +96,19 @@ export default function SurfWatch() {
             <h2>Surf Watch</h2>
             <p>Live ocean conditions off Santa Cruz from NOAA buoys and tide gauges, refreshed every 20 minutes.</p>
           </div>
-          {state === 'ok' && <span className="sw__stamp">Updated {clock(new Date(d.updated))}</span>}
+          {state === 'ok' && <span className="sw__stamp"><i aria-hidden="true" />Live, updated {clock(new Date(d.updated))}</span>}
         </div>
 
         <div className="sw__grid">
           <div className="sw__cell">
             <span className="sw__k">Swell at the buoy</span>
             <strong className="sw__v">{w ? <>{w.heightFt}<small>ft</small></> : dash}</strong>
-            <span className="sw__s">{w ? `${w.periodS ?? '–'} sec${w.direction ? `, from ${w.direction}` : ''}` : 'Offshore wave height and period'}</span>
+            <span className="sw__s">{w ? `${w.periodS ?? '–'} sec${w.direction ? `, from ${w.direction}` : ''}` : missing('Offshore wave height and period')}</span>
           </div>
           <div className="sw__cell">
             <span className="sw__k">Water</span>
             <strong className="sw__v">{water ? <>{water.tempF}<small>°F</small></> : dash}</strong>
-            <span className="sw__s">{water ? suit(water.tempF) : 'Sea surface temperature'}</span>
+            <span className="sw__s">{water ? suit(water.tempF) : missing('Sea surface temperature')}</span>
           </div>
           <div className="sw__cell">
             <span className="sw__k">Wind and sky</span>
@@ -125,14 +126,15 @@ export default function SurfWatch() {
 
         {state === 'off' && (
           <p className="sw__off">
-            Live conditions appear on the published site. Until then, see the{' '}
+            Live conditions could not be reached from this page. See the{' '}
             <a href="https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9413745" target="_blank" rel="noreferrer">NOAA tide predictions for Santa Cruz</a> and the{' '}
             <a href="https://www.ndbc.noaa.gov/station_page.php?station=46236" target="_blank" rel="noreferrer">Monterey Canyon buoy</a>.
           </p>
         )}
         {state === 'ok' && (
           <p className="sw__src">
-            Swell and water: NDBC {d.buoy ? `${d.buoy.name} (${d.buoy.id})` : 'buoy'}, measured offshore, so breaking waves in town are usually smaller. Tide: NOAA station {d.tideStation.id}. Wind: National Weather Service.
+            {d.buoy ? <>Swell and water: NDBC {d.buoy.name} ({d.buoy.id}), measured offshore, so breaking waves in town are usually smaller. </> : <>Swell: the offshore buoys are not reporting at the moment, so check the cams below. </>}
+            Tide: NOAA station {d.tideStation.id}. Wind: National Weather Service.
           </p>
         )}
       </div>

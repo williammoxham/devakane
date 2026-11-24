@@ -56,6 +56,7 @@ export default function PhotoHero() {
           <span className="phero__line"><span>Find your</span></span>
           <span className="phero__line"><span>dream home.</span></span>
         </h1>
+        <p className="phero__sub">Anyone can learn Santa Cruz. Deva has lived it his whole life.</p>
         <HeroSearch />
       </div>
 

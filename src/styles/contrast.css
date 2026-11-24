@@ -1,0 +1,258 @@
+/* =========================================================
+   Contrast and flow layer (loaded last).
+   1. Darker type and stronger rules: body copy reads at AA+ everywhere.
+   2. One color means "act": a deep bronze used only on the main conversion
+      buttons (home value, consultation, contact, sign up). Everything else
+      is ink or white, so the eye always knows where the next step is.
+   3. Section rhythm: light, dark, light. Dark bands are reserved for the
+      two moments that matter most, the home value offer and the market facts,
+      so they read as stops on the way down the page.
+   4. Facts get the weight: numbers large and bright, labels quiet.
+   ========================================================= */
+
+:root {
+  --paper: #ffffff;
+  --fog: #eef0ec;
+  --ink: #0d1517;
+  --muted: #414b4a;      /* about 9:1 on white */
+  --line: rgba(13, 21, 23, 0.14);
+  --line-strong: rgba(13, 21, 23, 0.32);
+  --act: #9a4421;        /* bronze: action only */
+  --act-hover: #7f3517;
+  --fact: #e9bf96;       /* bronze tint for figures on dark bands */
+}
+
+body { color: var(--ink); background: var(--paper); }
+p { color: inherit; }
+
+/* ---------- Headlines: a clear size step between section titles and everything else ---------- */
+.section__head h2, .split__text h2, .rail__head h2, .hover-list h2, .cards__title, .hl__title,
+.market__head h2, .why__intro h2, .bento-wrap h2, .jp h2, .nl h2, .git h2, .tst h2, .jsec__head h2 {
+  font-size: clamp(40px, 5vw, 74px) !important; line-height: 1.02 !important; letter-spacing: -0.03em !important;
+}
+.meet__lede, .wwd__lede, .value__text p, .why__intro p, .market__head p, .jsec__head p { font-size: clamp(17px, 1.35vw, 20px); }
+
+/* Quiet labels, but still readable */
+.meta, .topic, .tile__label, .card__eyebrow, .mstat__label, .mstat__sub, .fine, .market__note, .shops .fine,
+.listing__addr, .meet__facts dt, .git dt, .footer small { color: var(--muted); }
+.meta, .mstat__sub, .market__note { font-size: 13.5px; }
+
+/* ---------- The action color ---------- */
+.btn { min-height: 48px; font-weight: 600; letter-spacing: 0.005em; transition: background .2s, color .2s, transform .2s var(--ease), box-shadow .2s; }
+.btn:active { transform: translateY(1px); }
+.phero__ctas .btn--light,
+.value .btn--light,
+.wwd__ctas .btn:first-child,
+.meet__ctas .btn--dark,
+.hl-empty__ctas .btn--dark,
+.nl__form .btn,
+.git__form button[type='submit'], .contact .cform button[type='submit'],
+.livehere__cta .btn, .reader__ask {
+  background: var(--act) !important; color: #fff !important; border-color: var(--act) !important;
+  box-shadow: 0 10px 26px -12px rgba(154, 68, 33, .7);
+}
+.phero__ctas .btn--light:hover, .value .btn--light:hover, .wwd__ctas .btn:first-child:hover, .meet__ctas .btn--dark:hover,
+.hl-empty__ctas .btn--dark:hover, .nl__form .btn:hover, .git__form button[type='submit']:hover, .livehere__cta .btn:hover, .reader__ask:hover {
+  background: var(--act-hover) !important; border-color: var(--act-hover) !important;
+}
+/* header contact: bronze once the header is on a light page */
+.gnav:not(.gnav--over) .gnav__cta { background: var(--act) !important; }
+.gnav:not(.gnav--over) .gnav__cta:hover { background: var(--act-hover) !important; }
+/* secondary buttons are outlines, never filled color */
+.btn--ghost { border: 1.5px solid var(--ink) !important; color: var(--ink) !important; background: transparent !important; }
+.btn--ghost:hover { background: var(--ink) !important; color: #fff !important; }
+.btn--ghost-light { border: 1.5px solid rgba(255,255,255,.85) !important; color: #fff !important; }
+.textlink { border-bottom: 1.5px solid var(--act); font-weight: 600; }
+:focus-visible { outline: 2.5px solid var(--act) !important; outline-offset: 3px; }
+
+/* ---------- Hero: stronger read on the headline and search ---------- */
+.phero h1 { text-shadow: 0 2px 30px rgba(0, 10, 14, .35); }
+.phero__scrim { background: linear-gradient(180deg, rgba(5,13,16,.62) 0%, rgba(5,13,16,.3) 38%, rgba(5,13,16,0) 60%, rgba(5,13,16,0) 74%, rgba(5,13,16,.58) 100%) !important; }
+
+/* ---------- Meet Deva: name, then the facts you'd call ---------- */
+.meet { background: var(--paper); }
+.meet__role { color: var(--act) !important; font-weight: 600; font-size: 15.5px; }
+.meet__facts dd, .meet__facts a { color: var(--ink); font-weight: 600; font-size: 17px; }
+
+/* ---------- Rhythm: neighborhoods go light so the home value band stands out ---------- */
+.rail { background: var(--paper) !important; color: var(--ink); border-top: 1px solid var(--line); }
+.rail__head h2 { color: var(--ink); }
+.rail__head .textlink { color: var(--ink) !important; }
+.rail__cap h3 { color: var(--ink); }
+.rail__cap p { color: var(--muted) !important; }
+.rail__item a:hover h3 { color: var(--act) !important; }
+.rail__progress { background: var(--line) !important; }
+.rail__progress i { background: var(--ink) !important; }
+
+/* Home value: the first dark stop. Make the offer unmistakable. */
+.value { background: #0b1d20 !important; }
+.value h2 { font-size: clamp(44px, 5.4vw, 80px) !important; line-height: 1 !important; color: #fff; }
+.value__text p { color: rgba(255,255,255,.84) !important; }
+
+/* Work with Deva: light, so the person stands apart from the dark offer above */
+.wwd { background: var(--fog) !important; color: var(--ink) !important; }
+.wwd h2 { color: var(--ink) !important; }
+.wwd__role { color: var(--act) !important; font-weight: 600; }
+.wwd__lede { color: var(--ink) !important; }
+.wwd__tags li { border-color: var(--line-strong) !important; color: var(--ink); background: var(--paper); }
+.wwd__ctas .btn--ghost-light { border-color: var(--ink) !important; color: var(--ink) !important; }
+.wwd__ctas .btn--ghost-light:hover { background: var(--ink) !important; color: #fff !important; }
+
+/* How a sale comes together: light band, photo slides keep their white captions */
+.hl { background: var(--paper) !important; color: var(--ink) !important; border-top: 1px solid var(--line); }
+.hl__title { color: var(--ink); }
+.hl__cap, .hl__cap h3, .hl__cap p { color: #fff !important; }
+.hl__slide { opacity: .28; }
+.hl__dots { background: var(--fog) !important; }
+.hl__dots button { background: rgba(13,21,23,.3) !important; }
+.hl__dots i { background: var(--ink) !important; }
+.hl__play { background: var(--fog) !important; color: var(--ink) !important; }
+
+/* Market: the second dark stop. Numbers are the headline. */
+.market { background: #0b1d20 !important; }
+.market__stats strong { font-size: clamp(40px, 4.3vw, 68px) !important; color: #fff; white-space: nowrap; }
+@media (max-width: 1100px) { .market__stats { grid-template-columns: 1fr 1fr !important; row-gap: 28px; } .market__stats li:nth-child(3) { padding-left: 0 !important; border-left: 0 !important; } }
+.market__label { color: var(--fact) !important; font-size: 15.5px; }
+.market__stats p { color: rgba(255,255,255,.78) !important; font-size: 14.5px; }
+.market__head p { color: rgba(255,255,255,.78) !important; }
+.mchart { border-color: rgba(255,255,255,.18) !important; }
+
+/* Tools and reasons: light, with crisp card edges instead of soft gray */
+.bento-wrap { background: var(--fog) !important; }
+.tile:not(.tile--search):not(.tile--video) { background: var(--paper) !important; border: 1px solid var(--line) !important; box-shadow: 0 1px 0 rgba(13,21,23,.04), 0 18px 40px -28px rgba(13,21,23,.35); }
+.why { background: var(--paper) !important; }
+.wcard__fig { color: inherit; }
+
+/* Featured properties and listings: price first */
+.listing__price { font-size: 26px !important; color: var(--ink); }
+.home-listings { background: var(--fog) !important; }
+.hl-empty { background: var(--paper) !important; border-color: var(--line-strong) !important; }
+.hl-empty p { color: var(--ink) !important; }
+
+/* Services: stronger card titles */
+.cards { background: var(--paper); }
+.card__title { text-shadow: 0 1px 18px rgba(0,0,0,.35); }
+
+/* Journal preview, newsletter, contact: alternate so each one is its own stop */
+.jp { background: var(--paper); }
+.nl { background: var(--fog) !important; border-top: 0 !important; }
+.nl p { color: var(--muted) !important; }
+.nl__form input { border-color: var(--line-strong) !important; }
+.git { background: var(--paper) !important; border-top: 1px solid var(--line); }
+.git dd, .git dd a { color: var(--ink); font-weight: 600; }
+
+/* Section spacing: one steady beat down the page */
+.cards, .home-listings, .jp, .why, .bento-wrap, .git { padding-top: clamp(84px, 9vw, 140px) !important; padding-bottom: clamp(84px, 9vw, 140px) !important; }
+
+/* Journal page */
+.jsec__head p, .trail p, .shoplist p, .lh p { color: var(--muted) !important; }
+.sw__s, .sw__k { color: rgba(255,255,255,.78) !important; }
+.sw__v { color: #fff; }
+.brk__note { color: rgba(255,255,255,.86) !important; }
+
+/* =========================================================
+   Type: the industry pattern. A classic editorial serif for headlines
+   (our Newsreader plays the role Mercury plays for Sotheby's) and a neutral
+   Helvetica-style sans for everything else (Inter, the screen-built
+   cousin of Helvetica Neue and Benton Sans).
+   ========================================================= */
+:root { --sans: 'Inter Variable', 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+body, button, input, select, textarea { font-family: var(--sans); }
+body { letter-spacing: -0.006em; font-feature-settings: 'cv11', 'ss03'; }
+.tile__big, .rates button strong, .listing__price, .steps__num, .sw__v small, .meet__facts dd { font-variant-numeric: tabular-nums; }
+
+/* =========================================================
+   Color: two quiet supporting tones, used as fades, never as blocks.
+   Sand (warm, the beach) and sea-glass (cool, the water), plus a low
+   sunset glow on the dark bands. Each section hands off to the next.
+   ========================================================= */
+:root {
+  --sand-wash: #f5eee3;
+  --glass-wash: #ebf2ef;
+  --glow-warm: rgba(196, 104, 56, 0.28);
+  --glow-cool: rgba(130, 186, 172, 0.16);
+}
+
+/* Hero: the promise, in one line under the headline */
+.phero__sub { font-family: var(--serif-display); font-style: italic; font-size: clamp(19px, 1.9vw, 27px); line-height: 1.35; color: rgba(255,255,255,.94);
+  max-width: 30em; margin-top: -6px; text-shadow: 0 1px 18px rgba(0,10,14,.45); }
+
+/* Meet Deva fades warm into the services below */
+.meet { background: linear-gradient(180deg, #fff 0%, #fff 45%, var(--sand-wash) 100%) !important; }
+.cards { background: linear-gradient(180deg, var(--sand-wash) 0%, #fff 55%) !important; }
+
+/* Map section: deep water with a cool shimmer */
+.map3d { background:
+  radial-gradient(70% 60% at 85% 0%, var(--glow-cool), transparent 70%),
+  linear-gradient(180deg, #10282b 0%, #0a1a1d 100%) !important; }
+
+/* Featured homes hand off from white to sea-glass, the neighborhoods carry it back */
+.home-listings { background: linear-gradient(180deg, #fff 0%, var(--glass-wash) 100%) !important; }
+.rail { background: linear-gradient(180deg, var(--glass-wash) 0%, #fff 45%) !important; border-top: 0 !important; }
+
+/* Home value: dark, with the low warm glow of a sunset at its edge */
+.value { background:
+  radial-gradient(90% 90% at 100% 100%, var(--glow-warm), transparent 62%),
+  linear-gradient(180deg, #0d2225 0%, #0a1a1d 100%) !important; }
+
+/* Work with Deva: a soft diagonal from sand to sea-glass */
+.wwd { background: linear-gradient(120deg, var(--sand-wash) 0%, #fbf8f3 45%, var(--glass-wash) 100%) !important; }
+
+/* Process carousel: white fading warm */
+.hl { background: linear-gradient(180deg, #fff 0%, #fff 60%, var(--sand-wash) 100%) !important; border-top: 0 !important; }
+
+/* Market: night water, a cool glow behind the numbers, and figures that warm toward sand */
+.market { background:
+  radial-gradient(60% 70% at 0% 0%, var(--glow-cool), transparent 70%),
+  radial-gradient(50% 60% at 100% 100%, rgba(196,104,56,.16), transparent 70%),
+  linear-gradient(180deg, #0a1a1d 0%, #0e2629 100%) !important; }
+.market__stats strong { background: linear-gradient(180deg, #ffffff 35%, #f3d3ad 100%); -webkit-background-clip: text; background-clip: text; color: transparent !important; }
+
+/* Tools and reasons */
+.bento-wrap { background: linear-gradient(180deg, var(--glass-wash) 0%, var(--sand-wash) 100%) !important; }
+.why { background: linear-gradient(180deg, var(--sand-wash) 0%, #fff 30%) !important; }
+
+/* Journal preview, newsletter, contact */
+.jp { background: linear-gradient(180deg, #fff 0%, var(--glass-wash) 100%) !important; }
+.nl { background: linear-gradient(90deg, var(--glass-wash) 0%, var(--sand-wash) 100%) !important; }
+.git { background: linear-gradient(180deg, #fff 0%, #fff 50%, var(--sand-wash) 100%) !important; border-top: 0 !important; }
+.footer { background:
+  radial-gradient(60% 120% at 0% 0%, rgba(196,104,56,.14), transparent 65%),
+  linear-gradient(180deg, #0c1e21 0%, #071214 100%) !important; }
+
+/* Journal page bands */
+.journal .jsec#latest { background: linear-gradient(180deg, #fff 0%, var(--glass-wash) 100%); }
+.wh { background: linear-gradient(120deg, var(--sand-wash) 0%, #fff 60%); }
+.surf { background:
+  radial-gradient(70% 60% at 100% 0%, var(--glow-cool), transparent 70%),
+  linear-gradient(180deg, #0f2629 0%, #0a1a1d 100%) !important; }
+.shops { background: linear-gradient(180deg, var(--sand-wash) 0%, #fff 100%) !important; }
+
+/* A thin bronze-to-sea rule under section titles, so the eye lands, then reads */
+.section__head h2::after, .cards__title::after, .rail__head h2::after, .market__head h2::after, .jsec__head h2::after, .why__intro h2::after, .git h2::after {
+  content: ""; display: block; width: 56px; height: 2px; margin-top: 18px; border-radius: 2px;
+  background: linear-gradient(90deg, var(--act), #7fb3a6);
+}
+.phero .hsearch__modes button, .phero .hsearch__near { color: #fff !important; text-shadow: 0 1px 12px rgba(0,10,14,.6); }
+
+/* =========================================================
+   Punch pass: a notch more contrast everywhere.
+   ========================================================= */
+:root {
+  --muted: #333d3c;                       /* about 11:1 on white */
+  --line: rgba(13, 21, 23, 0.18);
+  --line-strong: rgba(13, 21, 23, 0.42);
+}
+/* Photos: a touch more depth and color, the way they look printed */
+.plate--photo img, .phero__img img, .rail__item img { filter: contrast(1.07) saturate(1.08); }
+/* Display type a little heavier so headlines hold their own next to photos */
+.section__head h2, .rail__head h2, .cards__title, .hl__title, .market__head h2, .why__intro h2,
+.bento-wrap h2, .jp h2, .nl h2, .git h2, .jsec__head h2, .mdv h2, .whx h2, .value__text h2, .wwd h2 {
+  font-variation-settings: 'wght' 450; color: inherit;
+}
+.section__head h2, .rail__head h2, .cards__title, .jsec__head h2, .jp h2, .git h2, .nl h2 { color: #0a1113; }
+/* Secondary buttons: a firmer outline */
+.btn--ghost, .btn--ghost-light { border-width: 2px !important; }
+/* Light bands alternate so white sections don't run together */
+.home-listings { background: linear-gradient(180deg, var(--fog) 0%, #fff 100%) !important; }
+.cards { background: #fff !important; }

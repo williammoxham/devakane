@@ -91,3 +91,32 @@ export function usePacificTime() {
 
 export const fmtMoney = (n) =>
   n.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+
+// Page-top hero parallax, shared by the home page and the Journal.
+// Returns how far the first screen has scrolled, 0..1.
+export function useHeroScroll() {
+  const [scroll, setScroll] = useState(0);
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    let raf = 0;
+    const on = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        setScroll(Math.min(1, window.scrollY / window.innerHeight));
+      });
+    };
+    on();
+    window.addEventListener('scroll', on, { passive: true });
+    return () => { window.removeEventListener('scroll', on); cancelAnimationFrame(raf); };
+  }, []);
+  return scroll;
+}
+
+// Marks the page as opening on a dark photo, so the top bar turns white over it.
+export function useDarkHero() {
+  useEffect(() => {
+    document.documentElement.dataset.hero = 'dark';
+    return () => { delete document.documentElement.dataset.hero; };
+  }, []);
+}
