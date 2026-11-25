@@ -136,30 +136,53 @@ function Latest() {
   );
 }
 
+function BreakList({ items }) {
+  return (
+    <ol className="brx__list">
+      {items.map((b) => (
+        <li key={b.name} className="brx">
+          <div className="brx__top">
+            <h5>{b.name}</h5>
+            {b.cam && <a href={b.cam} target="_blank" rel="noreferrer" className="brx__cam">Live cam</a>}
+          </div>
+          <span className="brx__where">{b.where}</span>
+          <p>{b.note}</p>
+          {b.near && <Link to={`/neighborhoods#${b.near}`} className="brx__near">Living nearby: {bySlug[b.near]?.name}</Link>}
+        </li>
+      ))}
+    </ol>
+  );
+}
+
 function Breaks() {
+  const easy = breaks.filter((b) => b.tier === 'easy');
+  const hard = breaks.filter((b) => b.tier === 'advanced');
   return (
     <div className="breaks container">
       <div className="breaks__head">
-        <h3>The breaks</h3>
-        <p>West to east, from the lighthouse to La Selva. Cam links open the live HD view.</p>
+        <h3>Every break in the county</h3>
+        <p>North to south, Waddell Creek to Sunset Beach, sorted by who should paddle out.</p>
       </div>
-      <ol className="breaks__list">
-        {breaks.map((b) => (
-          <li key={b.name} className="brk">
-            <div className="brk__name">
-              <h4>{b.name}</h4>
-              <span>{b.where}</span>
-            </div>
-            <p className="brk__note">{b.note}</p>
-            <div className="brk__meta">
-              <span className={`lvl lvl--${b.level.split(' ')[0].toLowerCase()}`}>{b.level}</span>
-              {b.cam && <a href={b.cam} target="_blank" rel="noreferrer" className="brk__cam">Live cam</a>}
-              <Link to={`/neighborhoods#${b.near}`} className="brk__near">Living nearby: {bySlug[b.near]?.name}</Link>
-            </div>
-          </li>
-        ))}
-      </ol>
-      <p className="breaks__more"><a href={camsMore.url} target="_blank" rel="noreferrer">{camsMore.label}</a></p>
+      <div className="brx__grid">
+        <section className="brx__col brx__col--easy" aria-labelledby="brx-easy">
+          <header>
+            <h4 id="brx-easy">Beginner to intermediate</h4>
+            <p>{easy.length} spots where you can learn and progress.</p>
+          </header>
+          <BreakList items={easy} />
+        </section>
+        <section className="brx__col brx__col--hard" aria-labelledby="brx-hard">
+          <header>
+            <h4 id="brx-hard">Advanced only</h4>
+            <p>{hard.length} spots with reef, rock, rips or heavy water. Watch first.</p>
+          </header>
+          <BreakList items={hard} />
+        </section>
+      </div>
+      <p className="breaks__more">
+        Ratings are for an ordinary day. Any break gets dangerous on a big swell.{' '}
+        <a href={camsMore.url} target="_blank" rel="noreferrer">{camsMore.label}</a>
+      </p>
     </div>
   );
 }

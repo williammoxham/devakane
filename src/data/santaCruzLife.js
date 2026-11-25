@@ -5,45 +5,39 @@ import { photos } from './photos.js';
 export const directions = (q) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
 
 // Surf breaks, west to east. `cam` links go to live HD cams (Surfline hosts the Santa Cruz cams).
+// Every break in the county, north to south, in two groups.
+// `tier: 'easy'` is beginner to intermediate; `tier: 'advanced'` is advanced only.
+// Any spot gets dangerous on a big swell, so these ratings are for normal days.
+const SL = 'https://www.surfline.com/surf-report/';
 export const breaks = [
-  {
-    name: 'Steamer Lane',
-    where: 'Lighthouse Point, West Cliff Drive',
-    level: 'Advanced',
-    note: 'The famous right-hand point off the lighthouse: several peaks, strong currents and a committed local crew. Watch from the cliff before you paddle out.',
-    cam: 'https://www.surfline.com/surf-report/steamer-lane/5842041f4e65fad6a7708805',
-    near: 'westside',
-  },
-  {
-    name: 'Cowell’s',
-    where: 'Cowell Beach, by the wharf',
-    level: 'Beginner',
-    note: 'A long, gentle wave in the lee of Lighthouse Point. The town’s classroom: foam boards, longboards and surf schools most mornings.',
-    cam: 'https://www.surfline.com/surf-report/cowells/5842041f4e65fad6a7708806',
-    near: 'downtown-midtown',
-  },
-  {
-    name: 'Pleasure Point',
-    where: 'East Cliff Drive, 36th to 41st Ave',
-    level: 'Intermediate to advanced',
-    note: 'A string of reef peaks along the East Cliff walkway that wakes up on south swells. Busy, friendly if you know the order, and right in front of the neighborhood.',
-    cam: 'https://www.surfline.com/surf-report/pleasure-point-overview/5cc8b6e886e42100015d1f87',
-    near: 'pleasure-point',
-  },
-  {
-    name: 'The Hook',
-    where: 'End of 41st Avenue',
-    level: 'Intermediate to advanced',
-    note: 'A right off the point at 41st, reached by the stairs at the end of the avenue. Longboards on small days, real wave on bigger ones.',
-    near: 'pleasure-point',
-  },
-  {
-    name: 'Manresa',
-    where: 'Manresa State Beach, La Selva Beach',
-    level: 'All levels, size dependent',
-    note: 'Open beach break south of Aptos. Picks up more swell than town and often has room to spread out, but it can close out and the currents are real.',
-    near: 'aptos',
-  },
+  // North coast
+  { tier: 'advanced', name: 'Waddell Creek', where: 'Highway 1 at the county line', note: 'Exposed beach break that takes the full northwest swell and wind. Kiters by afternoon, and a long way from help.' },
+  { tier: 'advanced', name: 'Scott Creek', where: 'Highway 1, north of Davenport', note: 'Open beach and creek-mouth peaks with strong currents. Remote, cold and often big.' },
+  { tier: 'advanced', name: 'Davenport Landing', where: 'Davenport Landing Beach', note: 'A reef break off the old pier site. Powerful, rocky and rarely crowded for good reason.' },
+  { tier: 'advanced', name: 'Four Mile', where: 'Wilder Ranch coast, Highway 1', note: 'A walk-in reef break below the bluffs. Heavy when it is on, and no lifeguards anywhere near.' },
+  { tier: 'advanced', name: 'Three Mile', where: 'Wilder Ranch coast, Highway 1', note: 'Reef and rock just up from town. Shallow, sharky and best left to people who know it.' },
+  // Westside
+  { tier: 'advanced', name: 'Natural Bridges', where: 'Natural Bridges State Beach', note: 'A shallow reef left off the state beach. Fun on the right day, unforgiving on the wrong one.', near: 'westside' },
+  { tier: 'easy', name: 'Mitchell’s Cove', where: 'West Cliff Drive at Almar', note: 'A mellow reef left on small days. A good step up from Cowell’s once you can pick your own waves.', near: 'westside' },
+  { tier: 'advanced', name: 'Stockton Avenue', where: 'West Cliff Drive at Stockton', note: 'A fast right over reef. Tight takeoff zone, quick sections and a dedicated local crew.', near: 'westside' },
+  { tier: 'advanced', name: 'Swift Street', where: 'West Cliff Drive at Swift', note: 'Rights off the cliff that hold real size in winter. Getting in and out off the rocks is part of the test.', near: 'westside' },
+  { tier: 'advanced', name: 'Steamer Lane', where: 'Lighthouse Point, West Cliff Drive', note: 'The famous right-hand point off the lighthouse: several peaks, strong currents and a committed local crew. Watch from the cliff before you paddle out.', cam: `${SL}steamer-lane/5842041f4e65fad6a7708805`, near: 'westside' },
+  // Town
+  { tier: 'easy', name: 'Cowell’s', where: 'Cowell Beach, by the wharf', note: 'A long, gentle wave in the lee of Lighthouse Point. The town’s classroom: foam boards, longboards and surf schools most mornings.', cam: `${SL}cowells/5842041f4e65fad6a7708806`, near: 'downtown-midtown' },
+  { tier: 'easy', name: 'It’s Beach', where: 'Lighthouse Field, below the lighthouse', note: 'A small reef peak next to the Lane, sheltered and forgiving. Busy with longboards and bodyboards.', near: 'westside' },
+  { tier: 'easy', name: 'Seabright and Castle', where: 'Seabright State Beach, by the harbor', note: 'Beach break peaks along Seabright. Mostly gentle, but the harbor mouth jetty is off limits.', near: 'seabright' },
+  // East side
+  { tier: 'easy', name: '26th Avenue', where: 'East Cliff Drive at 26th', note: 'A friendly mix of reef and sand with a relaxed crowd. One of the best places in town to learn on the east side.', near: 'live-oak' },
+  { tier: 'advanced', name: 'Sharks Cove', where: 'East Cliff Drive, Pleasure Point', note: 'A heavy, shallow right near Pleasure Point. Hollow on a good swell and very little room for mistakes.', near: 'pleasure-point' },
+  { tier: 'easy', name: 'Pleasure Point', where: 'East Cliff Drive, 36th to 41st Ave', note: 'A string of reef peaks along the East Cliff walkway that wakes up on south swells. Busy, friendly if you know the order, and right in front of the neighborhood.', cam: `${SL}pleasure-point-overview/5cc8b6e886e42100015d1f87`, near: 'pleasure-point' },
+  { tier: 'easy', name: 'The Hook', where: 'End of 41st Avenue', note: 'A right off the point at 41st, reached by the stairs at the end of the avenue. A longboard wave on small days, a real wave on bigger ones.', near: 'pleasure-point' },
+  { tier: 'easy', name: 'Capitola', where: 'Capitola Beach, by the jetty', note: 'Slow, rolling rights on a big south swell. A longboarder’s wave in front of the village.', near: 'capitola' },
+  // South county
+  { tier: 'easy', name: 'New Brighton', where: 'New Brighton State Beach', note: 'Soft beach break with a campground behind it. Good for learning when the swell is small.', near: 'capitola' },
+  { tier: 'easy', name: 'Seacliff', where: 'Seacliff State Beach, Aptos', note: 'Gentle waves on both sides of the old cement ship. A classic place to start.', near: 'aptos' },
+  { tier: 'easy', name: 'Rio del Mar', where: 'Rio del Mar State Beach, Aptos', note: 'Peaks off the jetties and sandbars. Fun and uncrowded for intermediates on smaller days.', near: 'aptos' },
+  { tier: 'advanced', name: 'Manresa', where: 'Manresa State Beach, La Selva Beach', note: 'Open beach break that picks up more swell than town. Hard shore break and strong rips.', near: 'aptos' },
+  { tier: 'advanced', name: 'Sunset Beach', where: 'Sunset State Beach, Watsonville', note: 'Wide open, powerful beach break with heavy currents and few people around.', near: 'watsonville' },
 ];
 
 export const camsMore = {

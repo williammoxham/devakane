@@ -256,3 +256,65 @@ body { letter-spacing: -0.006em; font-feature-settings: 'cv11', 'ss03'; }
 /* Light bands alternate so white sections don't run together */
 .home-listings { background: linear-gradient(180deg, var(--fog) 0%, #fff 100%) !important; }
 .cards { background: #fff !important; }
+
+/* =========================================================
+   Bold pass: fewer mid-tones. Bright whites, deep inks,
+   one bronze band for the money question, and darker type.
+   ========================================================= */
+:root {
+  --ink: #070c0d;
+  --muted: #262f2e;
+  --line: rgba(7, 12, 13, 0.2);
+  --line-strong: rgba(7, 12, 13, 0.5);
+}
+body { color: var(--ink); }
+.section__head h2, .rail__head h2, .cards__title, .hl__title, .market__head h2, .why__intro h2,
+.bento-wrap h2, .jp h2, .nl h2, .git h2, .jsec__head h2, .mdv h2, .whx h2, .value h2, .wwd h2 {
+  font-variation-settings: 'wght' 500;
+}
+
+/* Neighborhood rail: deep ink so the photos glow */
+.rail { background: radial-gradient(70% 50% at 100% 0%, rgba(47, 120, 110, .28), transparent 70%), #070c0d !important; color: #fff; }
+.rail__head h2, .rail__cap h3 { color: #fff !important; }
+.rail__head h2::after { background: linear-gradient(90deg, var(--fact), #a9cfc4) !important; }
+.rail__cap p { color: rgba(255, 255, 255, .74) !important; }
+.rail__head .textlink { color: #fff !important; }
+.rail__item a:hover h3 { color: var(--fact) !important; }
+.rail__progress { background: rgba(255, 255, 255, .18) !important; }
+.rail__progress i { background: #fff !important; }
+
+/* Home value: the one bronze band on the site */
+.value { background:
+  radial-gradient(80% 90% at 100% 100%, rgba(255, 190, 130, .28), transparent 60%),
+  linear-gradient(160deg, #a5481f 0%, #7a3013 55%, #4f1d0a 100%) !important; }
+.value h2, .value p, .value__body p { color: #fff !important; }
+.value .btn--light { background: #fff !important; color: #070c0d !important; border-color: #fff !important; box-shadow: 0 14px 34px -14px rgba(0, 0, 0, .55); }
+.value .btn--light:hover { background: #070c0d !important; color: #fff !important; border-color: #070c0d !important; }
+
+/* Work with Deva and the process: clean white, hard edges */
+.wwd { background: #fff !important; }
+.hl { background: #fff !important; }
+
+/* Tools: crisp sand instead of a wash */
+.bento-wrap { background: #f3ebdf !important; }
+.why { background: #fff !important; }
+
+/* Newsletter: a dark close before the contact form */
+.nl { background: radial-gradient(60% 120% at 0% 0%, rgba(47, 120, 110, .3), transparent 65%), #070c0d !important; color: #fff; }
+.nl h2 { color: #fff !important; }
+.nl p { color: rgba(255, 255, 255, .78) !important; }
+.nl__form input { background: rgba(255, 255, 255, .08) !important; border-color: rgba(255, 255, 255, .45) !important; color: #fff !important; }
+.nl__form input::placeholder { color: rgba(255, 255, 255, .6); }
+.git { background: #fff !important; }
+
+/* Cards and photos: deeper shadows, sharper edges */
+.card, .scard, .lcard, .tile { box-shadow: 0 1px 0 rgba(7, 12, 13, .06), 0 22px 50px -26px rgba(7, 12, 13, .45) !important; }
+.plate--photo img, .phero__img img, .rail__item img { filter: contrast(1.1) saturate(1.12); }
+
+/* Primary buttons hit harder */
+.btn { font-weight: 650; }
+.mdv__go, .whx__go { box-shadow: 0 14px 34px -12px rgba(154, 68, 33, .7); }
+
+/* Meet Deva and Journal surf: richer panels */
+.mdv__panel { background: radial-gradient(90% 60% at 100% 0%, rgba(169, 207, 196, .45), transparent 60%), linear-gradient(180deg, #f6efe4 0%, #ecdfcb 100%); }
+.mdv__also { font-size: 18px; font-weight: 650; color: var(--ink); margin: -4px 0 0; padding-left: 14px; border-left: 3px solid var(--act); }

@@ -46,7 +46,6 @@ export default function MeetDeva() {
           loading="lazy"
           style={{ transform: `translateY(${shift * 6}%) scale(1.14)` }}
         />
-        <span className="mdv__badge" aria-hidden="true">Lifelong Santa Cruz surfer</span>
       </div>
 
       <div className="mdv__panel">
@@ -60,6 +59,7 @@ export default function MeetDeva() {
           </ul>
 
           <p className="mdv__lede">{site.bio[0]}</p>
+          <p className="mdv__also">Lifelong surfer and local entrepreneur.</p>
 
           <div className="mdv__ctas">
             <button className="btn mdv__go" onClick={() => openContact()}>Contact Me</button>

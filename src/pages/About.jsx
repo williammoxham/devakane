@@ -18,6 +18,7 @@ export default function About() {
           <p className="about__role">{a.title}, {a.brokerage}</p>
           <p className="meet__also">{a.alsoKnownFor}, and a partner in <a href={site.business.url} target="_blank" rel="noreferrer">{site.business.name}</a></p>
           {site.bio.map((p) => <p key={p} className="about__p">{p}</p>)}
+          <p className="mdv__also">Lifelong surfer and local entrepreneur.</p>
           <dl className="facts">
             <div><dt>Brokerage</dt><dd>{a.office}</dd></div>
             <div><dt>License</dt><dd>CA DRE #{a.license}</dd></div>
